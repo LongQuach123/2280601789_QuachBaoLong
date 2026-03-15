@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{_layout :: head(~{::title})}">
+<title>Add Product</title>
+
+<style>
+
+body{
+    background: radial-gradient(circle at top,#1c1c1c,#000);
+}
+
+.luxury-card{
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(15px);
+
+    border:1px solid rgba(255,215,0,0.3);
+
+    border-radius:18px;
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.8),
+        0 0 10px rgba(255,215,0,0.15);
+
+}
+
+.luxury-header{
+
+    background:transparent;
+
+    border-bottom:1px solid rgba(255,215,0,0.3);
+
+    color:#FFD700;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+}
+
+.form-label{
+    color:#ccc;
+}
+
+.form-control,
+.form-select{
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    color:white;
+
+    border-radius:10px;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#FFD700;
+
+    box-shadow:0 0 8px rgba(255,215,0,0.5);
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+}
+
+.btn-gold{
+
+    background:linear-gradient(45deg,#FFD700,#c9a227);
+
+    border:none;
+
+    color:black;
+
+    font-weight:600;
+
+    border-radius:25px;
+
+    padding:10px 22px;
+
+    transition:0.3s;
+
+}
+
+.btn-gold:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 12px rgba(255,215,0,0.6);
+
+}
+
+.btn-dark-outline{
+
+    border:1px solid #777;
+
+    color:#ccc;
+
+    border-radius:25px;
+
+}
+
+.btn-dark-outline:hover{
+
+    background:#333;
+
+    color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div th:replace="~{_layout :: navbar}"></div>
+
+<div class="container body-content mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-8">
+
+<div class="card luxury-card">
+
+<div class="card-header luxury-header">
+<h4 class="mb-0">Add New Product</h4>
+</div>
+
+<div class="card-body">
+
+<form th:action="@{/products/save}" th:object="${product}" method="post">
+
+<div class="mb-3">
+<label class="form-label">Name</label>
+<input class="form-control" type="text"
+th:field="*{name}" placeholder="Enter product name..." required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Image URL</label>
+<input class="form-control" type="text"
+th:field="*{image}" placeholder="https://image-link.jpg">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Price</label>
+<input class="form-control" type="number"
+th:field="*{price}" placeholder="Enter product price..." required>
+</div>
+
+<div class="mb-4">
+<label class="form-label">Category</label>
+
+<select th:field="*{category}" class="form-select" required>
+
+<option value="">-- Select category --</option>
+
+<option th:each="cat : ${categories}"
+th:value="${cat.id}"
+th:text="${cat.name}">
+</option>
+
+</select>
+
+</div>
+
+<div class="d-flex justify-content-end gap-2">
+
+<a th:href="@{/products}" class="btn btn-dark-outline">
+Cancel
+</a>
+
+<button type="submit" class="btn btn-gold">
+Save Product
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div th:replace="~{_layout :: footer}"></div>
+
+</body>
+</html>

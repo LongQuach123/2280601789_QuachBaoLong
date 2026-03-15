@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{_layout :: head(~{::title})}">
+<title>Product List</title>
+
+<style>
+
+body{
+    background: radial-gradient(circle at top,#1c1c1c,#000);
+}
+
+/* CARD CONTAINER */
+
+.luxury-table{
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(12px);
+
+    border:1px solid rgba(255,215,0,0.3);
+
+    border-radius:16px;
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.8),
+        0 0 10px rgba(255,215,0,0.15);
+
+    padding:25px;
+
+}
+
+/* TABLE STYLE */
+
+.table{
+
+    color:#ddd;
+
+}
+
+.table thead{
+
+    background:rgba(255,215,0,0.15);
+
+    color:#FFD700;
+
+}
+
+.table tbody tr{
+
+    transition:0.3s;
+
+}
+
+.table tbody tr:hover{
+
+    background:rgba(255,215,0,0.08);
+
+}
+
+/* IMAGE STYLE */
+
+.product-img{
+
+    width:150px;
+    height:110px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    transition:0.3s;
+
+}
+
+.product-img:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 12px rgba(255,215,0,0.6);
+
+}
+
+/* BUTTON */
+
+.btn-gold{
+
+    background:linear-gradient(45deg,#FFD700,#c9a227);
+
+    border:none;
+
+    color:black;
+
+    font-weight:600;
+
+    border-radius:25px;
+
+    padding:10px 20px;
+
+    transition:0.3s;
+
+}
+
+.btn-gold:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 12px rgba(255,215,0,0.6);
+
+}
+
+.page-title{
+
+    color:#FFD700;
+
+    font-weight:600;
+
+    margin-bottom:20px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div th:replace="~{_layout :: navbar}"></div>
+
+<div class="container body-content mt-5">
+
+<div class="luxury-table">
+
+<h3 class="page-title">Product List</h3>
+
+<a th:href="@{/products/add}" class="btn btn-gold mb-3">
+Create New Product
+</a>
+
+<table class="table table-bordered align-middle">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+<th>Name</th>
+<th>Image</th>
+<th>Price</th>
+<th>Category</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr th:each="product : ${products}">
+
+<td th:text="${product.id}"></td>
+
+<td th:text="${product.name}"></td>
+
+<td>
+<img class="product-img"
+th:src="${product.image}"
+alt="Product Image">
+</td>
+
+<td th:text="${product.price}"></td>
+
+<td th:text="${product.category != null ? product.category.name : 'Chưa phân loại'}"></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div th:replace="~{_layout :: footer}"></div>
+
+</body>
+</html>

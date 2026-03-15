@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Access Denied</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+
+    margin:0;
+    height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background: radial-gradient(circle at top,#1c1c1c,#000);
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+/* CARD */
+
+.error-card{
+
+    text-align:center;
+
+    padding:50px 60px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(12px);
+
+    border:1px solid rgba(255,215,0,0.3);
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.9),
+        0 0 10px rgba(255,215,0,0.15);
+
+}
+
+/* 403 NUMBER */
+
+.error-code{
+
+    font-size:120px;
+
+    font-weight:bold;
+
+    color:#FFD700;
+
+    font-family:'Playfair Display',serif;
+
+}
+
+/* TITLE */
+
+.error-title{
+
+    color:white;
+
+    margin-bottom:15px;
+
+    letter-spacing:1px;
+
+}
+
+/* TEXT */
+
+.error-text{
+
+    color:#aaa;
+
+    margin-bottom:30px;
+
+}
+
+/* BUTTON */
+
+.btn-gold{
+
+    background:linear-gradient(45deg,#FFD700,#c9a227);
+
+    border:none;
+
+    color:black;
+
+    font-weight:600;
+
+    border-radius:25px;
+
+    padding:10px 22px;
+
+    transition:0.3s;
+
+}
+
+.btn-gold:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 12px rgba(255,215,0,0.6);
+
+}
+
+.btn-outline-light{
+
+    border-radius:25px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="error-card">
+
+<div class="error-code">
+403
+</div>
+
+<h3 class="error-title">
+ACCESS DENIED
+</h3>
+
+<p class="error-text">
+Xin lỗi, bạn không có quyền truy cập chức năng này
+</p>
+
+<div class="d-flex justify-content-center gap-2">
+
+<a th:href="@{/products}" class="btn btn-gold">
+Quay lại danh sách
+</a>
+
+<a th:href="@{/logout}" class="btn btn-outline-light">
+Đăng xuất
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
