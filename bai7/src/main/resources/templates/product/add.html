@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head(~{::title})}">
+    <title>Thêm sản phẩm mới</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --dark-bg: #1f2937;
+            --light-bg: #f9fafb;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card Header */
+        .card-header-custom {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header-custom::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .card-header-custom h4 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header-custom p {
+            margin: 0.5rem 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Body */
+        .card-body-custom {
+            padding: 2rem;
+        }
+
+        /* Form Groups */
+        .form-group-modern {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label-modern {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-bg);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-label-modern i {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .required-star {
+            color: var(--danger-color);
+            margin-left: 0.25rem;
+        }
+
+        /* Input Fields */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .form-control-modern:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control-modern:focus + .input-icon {
+            color: var(--primary-color);
+        }
+
+        /* Textarea */
+        textarea.form-control-modern {
+            padding: 12px 15px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Select */
+        .form-select-modern {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        .form-select-modern:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Image Preview */
+        .image-preview-container {
+            margin-top: 1rem;
+            text-align: center;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 2px dashed #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .image-preview-container:hover {
+            border-color: var(--primary-color);
+            background: #f3f4f6;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-placeholder {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .image-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn-cancel {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #6b7280;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Loading State */
+        .btn-submit.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-submit.loading::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 50%;
+            right: 20px;
+            margin-top: -9px;
+            border: 2px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinner 0.6s linear infinite;
+        }
+
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Validation Styles */
+        .form-control-modern.ng-invalid.ng-touched,
+        .form-select-modern.ng-invalid.ng-touched {
+            border-color: var(--danger-color);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .card-body-custom {
+                padding: 1.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column-reverse;
+            }
+            
+            .btn-cancel, .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animation for form fields */
+        .form-group-modern {
+            animation: fadeInRight 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group-modern:nth-child(1) { animation-delay: 0.1s; }
+        .form-group-modern:nth-child(2) { animation-delay: 0.2s; }
+        .form-group-modern:nth-child(3) { animation-delay: 0.3s; }
+        .form-group-modern:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{_layout :: navbar(0)}"></div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1 class="hero-title">
+                    <i class="fas fa-plus-circle me-3"></i>Thêm sản phẩm mới
+                </h1>
+                <p class="hero-subtitle">Điền thông tin chi tiết để thêm sản phẩm vào cửa hàng</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="form-card">
+                    <div class="card-header-custom">
+                        <h4>
+                            <i class="fas fa-box-open me-2"></i>Thông tin sản phẩm
+                        </h4>
+                        <p>Vui lòng điền đầy đủ thông tin bên dưới</p>
+                    </div>
+                    <div class="card-body-custom">
+                        <form th:action="@{/products/save}" th:object="${product}" method="post" id="productForm">
+                            <!-- Product Name -->
+                            <div class="form-group-modern">
+                                <label class="form-label-modern" for="name">
+                                    <i class="fas fa-tag"></i>
+                                    Tên sản phẩm
+                                    <span class="required-star">*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-pencil-alt input-icon"></i>
+                                    <input class="form-control-modern" 
+                                           type="text" 
+                                           th:field="*{name}" 
+                                           id="name" 
+                                           placeholder="Nhập tên sản phẩm..." 
+                                           required>
+                                </div>
+                                <small class="text-muted">Ví dụ: Áo thun nam cao cấp, Điện thoại thông minh,...</small>
+                            </div>
+
+                            <!-- Image URL -->
+                            <div class="form-group-modern">
+                                <label class="form-label-modern" for="image">
+                                    <i class="fas fa-image"></i>
+                                    URL hình ảnh
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-link input-icon"></i>
+                                    <input class="form-control-modern" 
+                                           type="text" 
+                                           th:field="*{image}" 
+                                           id="image" 
+                                           placeholder="https://example.com/image.jpg"
+                                           oninput="previewImage()">
+                                </div>
+                                <small class="text-muted">Nhập đường dẫn URL của hình ảnh sản phẩm</small>
+                                
+                                <!-- Image Preview -->
+                                <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+                                    <img class="image-preview" id="imagePreview" alt="Preview">
+                                </div>
+                                <div class="image-preview-container" id="imagePlaceholder">
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <p>Hình ảnh sẽ hiển thị ở đây</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="form-group-modern">
+                                <label class="form-label-modern" for="price">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Giá sản phẩm
+                                    <span class="required-star">*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-money-bill-wave input-icon"></i>
+                                    <input class="form-control-modern" 
+                                           type="number" 
+                                           th:field="*{price}" 
+                                           id="price" 
+                                           placeholder="Nhập giá tiền..." 
+                                           required
+                                           min="0"
+                                           step="1000">
+                                </div>
+                                <small class="text-muted">Đơn vị: VNĐ (Việt Nam Đồng)</small>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="form-group-modern">
+                                <label class="form-label-modern" for="category">
+                                    <i class="fas fa-folder"></i>
+                                    Danh mục
+                                    <span class="required-star">*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-list input-icon"></i>
+                                    <select th:field="*{category}" class="form-select-modern" id="category" required>
+                                        <option value="">-- Vui lòng chọn danh mục --</option>
+                                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="button-group">
+                                <a th:href="@{/products}" class="btn-cancel">
+                                    <i class="fas fa-times-circle"></i>
+                                    Hủy bỏ
+                                </a>
+                                <button type="submit" class="btn-submit" id="submitBtn">
+                                    <i class="fas fa-save"></i>
+                                    Lưu sản phẩm
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{_layout :: footer}"></div>
+
+    <script>
+        // Image Preview Function
+        function previewImage() {
+            const imageUrl = document.getElementById('image').value;
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const placeholder = document.getElementById('imagePlaceholder');
+            const preview = document.getElementById('imagePreview');
+            
+            if (imageUrl && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
+                preview.src = imageUrl;
+                preview.onload = function() {
+                    previewContainer.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                preview.onerror = function() {
+                    previewContainer.style.display = 'none';
+                    placeholder.style.display = 'block';
+                    showTemporaryMessage('URL hình ảnh không hợp lệ!', 'error');
+                };
+            } else {
+                previewContainer.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+
+        // Show temporary message
+        function showTemporaryMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-modern`;
+            messageDiv.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'} me-2"></i>${message}`;
+            messageDiv.style.position = 'fixed';
+            messageDiv.style.top = '20px';
+            messageDiv.style.right = '20px';
+            messageDiv.style.zIndex = '9999';
+            messageDiv.style.animation = 'slideDown 0.5s ease-out';
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(messageDiv);
+                }, 500);
+            }, 3000);
+        }
+
+        // Form Validation
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value;
+            const category = document.getElementById('category').value;
+            
+            if (!name) {
+                e.preventDefault();
+                showTemporaryMessage('Vui lòng nhập tên sản phẩm!', 'error');
+                document.getElementById('name').focus();
+                return false;
+            }
+            
+            if (!price || price <= 0) {
+                e.preventDefault();
+                showTemporaryMessage('Vui lòng nhập giá sản phẩm hợp lệ!', 'error');
+                document.getElementById('price').focus();
+                return false;
+            }
+            
+            if (!category) {
+                e.preventDefault();
+                showTemporaryMessage('Vui lòng chọn danh mục sản phẩm!', 'error');
+                document.getElementById('category').focus();
+                return false;
+            }
+            
+            // Add loading state
+            const btn = document.getElementById('submitBtn');
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...';
+        });
+
+        // Format price input as user types
+        document.getElementById('price').addEventListener('input', function(e) {
+            let value = this.value;
+            if (value < 0) {
+                this.value = 0;
+            }
+        });
+
+        // Auto-focus on name field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('name').focus();
+            
+            // Add animation classes
+            const formGroups = document.querySelectorAll('.form-group-modern');
+            formGroups.forEach((group, index) => {
+                group.style.opacity = '1';
+            });
+        });
+
+        // Optional: Add keyboard shortcut (Ctrl+Enter to submit)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('submitBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

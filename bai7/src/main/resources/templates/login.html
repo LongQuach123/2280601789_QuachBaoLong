@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập hệ thống</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient-start: #667eea;
+            --primary-gradient-end: #764ba2;
+            --card-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background shapes */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+
+        .shape-4 {
+            width: 250px;
+            height: 250px;
+            bottom: 20%;
+            left: -80px;
+            animation-delay: 15s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        /* Main card */
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header section */
+        .card-header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .icon-wrapper i {
+            font-size: 2.5rem;
+        }
+
+        .card-header-custom h3 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .card-header-custom p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Form section */
+        .card-body-custom {
+            padding: 2rem;
+        }
+
+        /* Modern form inputs */
+        .input-group-modern {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group-modern i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .form-control-modern:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control-modern:focus + i {
+            color: #667eea;
+        }
+
+        /* Label styling */
+        .form-label-modern {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        /* Button styling */
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        /* Alert styling */
+        .alert-custom {
+            border-radius: 12px;
+            border: none;
+            padding: 12px 15px;
+            margin-bottom: 1.5rem;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .alert-danger-custom {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        .alert-success-custom {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        /* Extra options */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .forgot-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .card-footer-custom {
+            background: #f9fafb;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .card-footer-custom p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .card-footer-custom a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-footer-custom a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                margin: 1rem;
+            }
+            
+            .card-body-custom {
+                padding: 1.5rem;
+            }
+            
+            .card-header-custom {
+                padding: 1.5rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: flex-start;
+            }
+        }
+
+        /* Loading state */
+        .btn-login.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-login.loading::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 50%;
+            right: 20px;
+            margin-top: -9px;
+            border: 2px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinner 0.6s linear infinite;
+        }
+
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Animated background shapes -->
+<div class="bg-shape shape-1"></div>
+<div class="bg-shape shape-2"></div>
+<div class="bg-shape shape-3"></div>
+<div class="bg-shape shape-4"></div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card">
+                <!-- Header with icon -->
+                <div class="card-header-custom">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Chào mừng trở lại!</h3>
+                    <p>Đăng nhập để tiếp tục mua sắm</p>
+                </div>
+
+                <!-- Body with form -->
+                <div class="card-body-custom">
+                    <!-- Error message -->
+                    <div th:if="${param.error}" class="alert-custom alert-danger-custom text-center" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Tài khoản hoặc mật khẩu không chính xác!
+                    </div>
+
+                    <!-- Logout message -->
+                    <div th:if="${param.logout}" class="alert-custom alert-success-custom text-center" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Bạn đã đăng xuất thành công.
+                    </div>
+
+                    <!-- Login form -->
+                    <form th:action="@{/login}" method="post" id="loginForm">
+                        <div class="input-group-modern">
+                            <i class="fas fa-user"></i>
+                            <input type="text" 
+                                   class="form-control-modern" 
+                                   id="username" 
+                                   name="username" 
+                                   placeholder="Nhập tài khoản" 
+                                   required 
+                                   autofocus>
+                        </div>
+                        
+                        <div class="input-group-modern">
+                            <i class="fas fa-key"></i>
+                            <input type="password" 
+                                   class="form-control-modern" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="Nhập mật khẩu" 
+                                   required>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe" name="remember-me">
+                                <span>Ghi nhớ đăng nhập</span>
+                            </label>
+                            <a href="#" class="forgot-link">
+                                <i class="fas fa-question-circle me-1"></i>Quên mật khẩu?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn-login" id="loginBtn">
+                            <i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập Ngay
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer-custom">
+                    <p>Chưa có tài khoản? <a href="#">Đăng ký ngay</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Add loading effect to submit button
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const btn = document.getElementById('loginBtn');
+        btn.classList.add('loading');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang đăng nhập...';
+        
+        // Optional: Prevent double submission
+        setTimeout(() => {
+            // The form will submit normally, this is just for visual feedback
+        }, 100);
+    });
+
+    // Optional: Add password visibility toggle
+    // You can uncomment this if you want to add show/hide password feature
+    /*
+
+    const togglePassword = document.createElement('i');
+    togglePassword.className = 'fas fa-eye-slash';
+    togglePassword.style.position = 'absolute';
+    togglePassword.style.right = '15px';
+    togglePassword.style.top = '50%';
+    togglePassword.style.transform = 'translateY(-50%)';
+    togglePassword.style.cursor = 'pointer';
+    togglePassword.style.color = '#9ca3af';
+    togglePassword.style.zIndex = '2';
+    
+    const passwordInput = document.getElementById('password');
+    passwordInput.parentNode.appendChild(togglePassword);
+    
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+    */
+</script>
+</body>
+</html>

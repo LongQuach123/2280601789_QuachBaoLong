@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head(~{::title})}">
+    <title>Đặt hàng thành công</title>
+</head>
+<body>
+    <div th:replace="~{_layout :: navbar(0)}"></div>
+
+    <div class="container mt-5">
+        <div class="alert alert-success text-center p-5">
+            <h2>Đặt hàng thành công!</h2>
+            <p>Cảm ơn bạn đã mua hàng.</p>
+            <p th:if="${lastOrderId != null}">Mã đơn hàng của bạn là: <strong th:text="${lastOrderId}"></strong></p>
+            <a class="btn btn-primary mt-3" th:href="@{/products}">Quay lại danh sách sản phẩm</a>
+        </div>
+    </div>
+
+    <div th:replace="~{_layout :: footer}"></div>
+</body>
+</html>
